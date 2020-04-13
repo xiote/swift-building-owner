@@ -1,26 +1,31 @@
 import Foundation
-import XMLCoder
 
-struct OwnerInfo: Decodable, Equatable {
-    var sigunguCd: Int
+struct Response: Codable, Equatable {
+    let header: Header
+    let body: Body
+}
+
+struct Header: Codable, Equatable {
+    let resultCode: String
+    let resultMsg: String
+}
+
+struct Body: Codable, Equatable {
+    let numOfRows: Int
+    let pageNo: Int
+    let totalCount: Int
+    let items: Items
+}
+
+struct Items: Codable, Equatable {
+    let item: [Item]
+}
+
+typealias OwnerInfo = Item
+struct Item: Codable, Equatable {
+    let sigunguCd: Int
 
     enum CodingKeys: String, CodingKey {
         case sigunguCd = "sigungu_cd"
-    }
-}
-
-class Parser {
-    var text = "Hello, World!"
-
-    func parse(_ jsonString: String) -> OwnerInfo {
-        let data = jsonString.data(using: .utf8)!
-        let ownerInfo: OwnerInfo = try! JSONDecoder().decode(OwnerInfo.self, from: data)
-        return ownerInfo
-    }
-
-    func parseXml(_ xmlString: String) -> OwnerInfo {
-        let data = xmlString.data(using: .utf8)!
-        let ownerInfo: OwnerInfo = try! XMLDecoder().decode(OwnerInfo.self, from: data)
-        return ownerInfo
     }
 }
